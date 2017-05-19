@@ -1,0 +1,32 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "settings": {
+        "import/resolver": "webpack"
+    },
+    "extends": "eslint:recommended",
+    "parser": "babel-eslint",
+    "rules": {
+        "strict": 0,
+        "no-unused-vars": ["warn", { "args": "none" }],
+        "no-console": 0,
+        "eol-last": [
+            "error", "always"
+        ],
+        "indent": [
+            "error", 4
+        ],
+        "linebreak-style": [
+            "error", "unix"
+        ],
+        "quotes": [
+            "error", "single"
+        ],
+        "semi": [
+            "error", "never"
+        ],
+        "no-undef": 0
+    }
+}

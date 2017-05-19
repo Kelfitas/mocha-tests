@@ -1,0 +1,11 @@
+# Dependencies
+node_modules
+
+# Webpack stuff
+webpack-stats.json
+
+# Build dir
+test
+
+# Mac
+.DS_Store
