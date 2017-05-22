@@ -1,7 +1,9 @@
 NODE_MODULES=node_modules
-WEBPACK_BIN=$(NODE_MODULES)/webpack/bin/webpack.js
-MOCHA_BIN=$(NODE_MODULES)/mocha/bin/mocha
-NODE_TESTS=test/node/*.js
+NODE_MODULES_BIN=node_modules/.bin
+WEBPACK_BIN=$(NODE_MODULES_BIN)/webpack
+MOCHA_BIN=$(NODE_MODULES_BIN)/mocha
+NYC_BIN=$(NODE_MODULES_BIN)/nyc
+NODE_TESTS=assets/main.js
 
 all: install
 
@@ -10,20 +12,11 @@ install-yarn: package.json
 
 install: install-yarn
 
-build-node: install
-	TARGET=node $(WEBPACK_BIN) $(WEBPACKARGS)
+build: install
+	$(WEBPACK_BIN) $(WEBPACKARGS)
 
-build-client: install
-	TARGET=client $(WEBPACK_BIN) $(WEBPACKARGS)
-
-build: build-node
-build: build-client
-
-watch-node: WEBPACKARGS=--watch
-watch-node: build-node
-
-watch-client: WEBPACKARGS=--watch
-watch-client: build-client
+watch: WEBPACKARGS=--watch
+watch: build
 
 clean:
 	git clean -dx -e .env
@@ -42,19 +35,20 @@ ifneq ($(session_exists),0)
 	# Watch node
 	tmux select-pane -t0
 	tmux resize-pane -y10
-	tmux send-keys -t "$(SESSION)" "make watch-node" C-m
-
-	# Watch client
-	tmux split-window -h
-	tmux send-keys -t "$(SESSION)" "make watch-client" C-m
+	tmux send-keys -t "$(SESSION)" "make watch" C-m
 
 	# Main shell
-	tmux select-pane -t2
+	tmux select-pane -t1
 endif
 
 dev: install dev-session
 	# Attach to existing or created session
 	tmux attach -t "$(SESSION)"
 
-test: $(NODE_TESTS)
-	$(MOCHA_BIN) "$(NODE_TESTS)"
+test:
+	$(MOCHA_BIN) --compilers js:babel-core/register $(NODE_TESTS)
+
+coverage:
+	$(NYC_BIN) --require babel-core/register make test
+
+.PHONY: test clean coverage

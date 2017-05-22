@@ -2,10 +2,6 @@ var path = require('path')
 var webpack = require('webpack')
 var BundleTracker = require('webpack-bundle-tracker')
 
-const TARGET = ('client' === process.env.TARGET) ? 'web' : 'node'
-
-console.log(TARGET)
-
 const ASSETS_DIR = path.join(__dirname, 'assets')
 const BUILD_DIR = path.join(__dirname, 'test', TARGET)
 
@@ -15,7 +11,7 @@ var pluginsWebpack = [
 ];
 
 var config = {
-    target: TARGET,
+    target: 'web',
     entry: ASSETS_DIR + '/main.js',
     output: {
         filename: 'tests.js',

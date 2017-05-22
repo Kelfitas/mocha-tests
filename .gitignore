@@ -9,3 +9,6 @@ test
 
 # Mac
 .DS_Store
+
+# Nyc
+.nyc_output

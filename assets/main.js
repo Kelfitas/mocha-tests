@@ -1,5 +1,6 @@
 import * as index from './tests/index'
 
-for (let test of index) {
-    test()
+for (let test in index) {
+    // call each test function from index tests
+    index[test]()
 }
